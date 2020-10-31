@@ -26,6 +26,7 @@ public class FetchTavlingar extends AbstractProcess {
             Tavling t = client.getTavling(tavling.eventorId);
 
             dao.update(t.eventorId, t.disciplineId);
+            //System.out.println("FETCHTAVLINGAR: Tävling: " + tavling.namn + " - status: " + tavling.eventStatusId + " - form: " + tavling.eventForm) ;
         }
     }
 

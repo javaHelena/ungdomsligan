@@ -1,14 +1,10 @@
 package se.edtek.olresult.process;
 
 import org.skife.jdbi.v2.DBI;
-import se.edtek.olresult.EventorClient;
 import se.edtek.olresult.db.LopareDAO;
 import se.edtek.olresult.db.ResultatDAO;
-import se.edtek.olresult.db.TavlingDAO;
-import se.edtek.olresult.eventormodel.Result;
 import se.edtek.olresult.internalmodel.Lopare;
 import se.edtek.olresult.internalmodel.Resultat;
-import se.edtek.olresult.internalmodel.Tavling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +21,10 @@ public class CalculateResult extends AbstractProcess {
 
         List<Lopare> jokare = lopareDAO.findAll();
 
-        jokare.stream().forEach(j -> calculatePoints(resultatDAO, lopareDAO, j));
+        jokare.stream().forEach(j -> {
+            calculatePoints(resultatDAO, lopareDAO, j);
+           // System.out.println("Calculating points for " + j.fornamn + " " + j.efternamn);
+        });
     }
 
     private void calculatePoints(ResultatDAO resultatDAO, LopareDAO lopareDAO, Lopare lopare) {
@@ -37,7 +36,7 @@ public class CalculateResult extends AbstractProcess {
 
         List<Integer> rr = new ArrayList<>();
 
-        for (Resultat r: resultat) {
+        for (Resultat r : resultat) {
 
             if (r.poang == 100) {
                 numHundredPointers++;
@@ -55,6 +54,20 @@ public class CalculateResult extends AbstractProcess {
         }
 
         int tot = sumPoints(resultat);
+
+        resultat.stream().forEach(r -> {
+            if (r.lopare == null) {
+            } else {
+//                System.out.println("EventorId: " + r.lopare.eventorId +
+//                        " - Person: " + lopare.fornamn + " " + lopare.efternamn +
+//                        " - tävling: " + r.tavling.namn +
+//                        " - klass??? : " + r.tavling.eventClassificationName +
+//                        " - poäng: " + r.poang +
+//                        " - plats: " + r.placering +
+//                        " - ålder: " + lopare.fodelseDatum.toString());
+            }
+
+        });
 
         lopareDAO.setPoints(lopare.id, numVictories, numHundredPointers, tot);
     }

@@ -6,12 +6,22 @@ import se.edtek.olresult.internalmodel.Lopare;
 import se.edtek.olresult.internalmodel.Resultat;
 import se.edtek.olresult.internalmodel.Tavling;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Mapper {
 
+    private static final List<String> INGNORABLE_EVENT_IDS = Arrays.asList("23544", "23548", "23612", "26734", "27179");
+
+//    23544 //Mila Stockholm by night
+//    23548 //Mila Stockholm by night
+//    23612 //Mila Stockholm by night
+//    26734 //Konsultkampen
+//    27179 //Mini-KM
+//    21756 // Rånässtafetten Öppna klasser?
 
     public static Lopare asLopare(Person person) {
         Lopare lopare = new Lopare();
@@ -31,8 +41,40 @@ public class Mapper {
         resultat.klass = classResult.eventClass.name;
         resultat.classTypeId = classResult.eventClass.classTypeId;
         resultat.baseClassId = classResult.eventClass.baseClassId;
-        resultat.baseClass = asBasklass(resultat.baseClassId);
+
+        if (classResult.eventClass.baseClassId == 0) {
+            //System.out.println("EventId, event.name; eventClass.name; baseClass.id; classType.id; eventClassStatus" );
+            //System.out.println(event.eventId + ";" + event.name +  "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId +  "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus );
+
+//            System.out.println("Tavling: " + event.name +  " - EventClass: " + classResult.eventClass.name + " - BaseClassId: " + classResult.eventClass.baseClassId +  " och ClassType id: " + classResult.eventClass.classTypeId + " - EventClassStatus: " + classResult.eventClass.eventClassStatus );
+        }
+
+        resultat.baseClass = asBasklass(resultat.baseClassId, classResult, event.eventId);
         resultat.maxpoang = resultat.baseClass.getMaxpoang();
+
+        // ************************ for Helena ***************** //
+
+
+        String id = resultat.lopare.eventorId;
+        String p = resultat.lopare.fornamn + "  " + resultat.lopare.fornamn;
+        String t = resultat.tavling.namn;
+        String kl = resultat.tavling.eventClassificationName;
+        int po = resultat.poang;
+        int pl = resultat.placering;
+        String bkl = resultat.baseClass.name();
+        int x = resultat.maxpoang;
+        int bx = resultat.baseClassId;
+        int cx = resultat.classTypeId;
+        String ex = classResult.eventClass.name;
+
+        String f = "no date";
+        if (resultat.lopare.fodelseDatum != null) {
+            f = resultat.lopare.fodelseDatum.toString();
+        }
+        //System.out.println("MAPPER: Resultat för: " + id + " - " + t + " - klass: " + bkl + "  - maxpoäng: " + x + "  (EventClass: "  + ex + " BaseClassId = " + bx + " och ClassType id: " + cx + ")");
+
+        // ************************ for Helena ***************** //
+
         return resultat;
     }
 
@@ -68,10 +110,11 @@ public class Mapper {
             if (resultat.maxpoang > 0) {
                 if (resultat.baseClass == BaseClass.INSKOLNING) {
                     resultat.poang = 10;
-                }
-                else {
+                } else {
                     resultat.poang = resultat.maxpoang - resultat.poangReduktion;
                 }
+            } else {
+                //System.out.println("MAPPER: Maxpoäng för tävling : " + resultat.tavling.namn + " är " + resultat.maxpoang);
             }
         }
     }
@@ -83,14 +126,16 @@ public class Mapper {
         for (PersonResult pr : classResult.personResult) {
 
             Resultat resultat = asResultat(event, classResult, eventorIdPerson);
-
+//            System.out.println("Tävling: " + event.name +
+//                    " - baseClassId: " + classResult.eventClass.baseClassId +
+//                    " - classTypeId: " + classResult.eventClass.classTypeId +
+//                    " - name " + classResult.eventClass.name);
             if (event.eventForm.equals("IndSingleDay")) {
                 populate(resultat, pr.result);
 
             } else if (event.eventForm.equals("IndMultiDay")) {
                 populate(resultat, pr.raceResult.result);
-            }
-            else {
+            } else {
                 throw new RuntimeException("Ogilitg EventForm: " + event.eventForm);
             }
 
@@ -102,7 +147,6 @@ public class Mapper {
     }
 
     private static int getPoangReduktion(String timeDiff) {
-        System.out.println(timeDiff);
         if (timeDiff == null) {
             return 0;
         }
@@ -128,6 +172,7 @@ public class Mapper {
         tavling.eventStatusId = event.eventStatusId;
         tavling.eventForm = event.eventForm;
 
+        System.out.println("Tävling: " + tavling.eventorId + " - " + tavling.namn + " - status: " + tavling.eventStatusId + " - form: " + tavling.eventForm) ;
         return tavling;
     }
 
@@ -137,13 +182,34 @@ public class Mapper {
         return lopare;
     }
 
-    public static BaseClass asBasklass(int baseClassId) {
+    public static BaseClass asBasklass(int baseClassId, ClassResult classResult, String eventId) {
+
+
+        if (INGNORABLE_EVENT_IDS.contains(eventId)) {
+            System.out.println("MAPPER.asBasKlass: Ignorerar tävling " + eventId);
+            return BaseClass.MAX_0;
+        }
+
+        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {
+            System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - använder " + BaseClass.MAX_100.name() + " istället.");
+            return BaseClass.MAX_100;
+        }
+
+        if (baseClassId == 0 && classResult.eventClass.classTypeId == 18) {
+            return BaseClass.MAX_50;
+        }
+
         for (BaseClass baseClass : BaseClass.values()) {
             if (baseClass.getKlass() == baseClassId) {
                 return baseClass;
             }
         }
-        return BaseClass.OGILTIG;
-        // throw new RuntimeException("Invalid k: " + k);
+
+        //return BaseClass.OGILTIG;
+        System.out.println("MAPPER.asBasKlass:  Classresult:  baseClassid: " + classResult.eventClass.baseClassId +
+                " - classTypeId: " + classResult.eventClass.classTypeId +
+                " - name: " + classResult.eventClass.name);
+
+        throw new RuntimeException("Invalid k: " + baseClassId);
     }
 }

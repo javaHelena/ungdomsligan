@@ -50,9 +50,10 @@ public class EventorClient {
             return Collections.EMPTY_LIST;
         }
 
+        System.out.println("****************   Results for lopare" + loparEventorId + "   *****************");
         List<Resultat> fetchedResults = new ArrayList<>();
         for (ResultList rl : rll.resultLists) {
-
+            System.out.println("Event: " + rl.event.name);
             if (rl.event.eventForm.equals("RelaySingleDay")) {
                 fetchedResults.add(Mapper.asRelaySingleDayResult(rl.event));
             }

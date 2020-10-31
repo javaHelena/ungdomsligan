@@ -10,29 +10,39 @@ import se.edtek.olresult.internalmodel.Resultat;
 import se.edtek.olresult.internalmodel.Tavling;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class FetchResultat extends AbstractProcess {
+    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2002, 12,31);
+
+    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2019, 1,1);  ///FOR TEST
+    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2019, 12,31);
 
     public void run() {
-        LocalDate from = LocalDate.of(2018, 1, 1);
-        LocalDate to = LocalDate.of(2018, 12, 02);
 
-        LocalDate oldestRunnerNotIncluded = LocalDate.of(2001, 12, 31);
+        LocalDate from = YEAR_START_DATE_LD;
+        LocalDate to = YEAR_END_DATE_LD;
+
+        LocalDate oldestRunnerNotIncluded = OLDEST_BIRTH_DATE_LD;
 
         DBI dbi = getDBI();
         LopareDAO dao = dbi.onDemand(LopareDAO.class);
 
         List<Lopare> jokare = dao.findAll();
 
+        List<String> samples = Arrays.asList("35963", "108347","139245", "178211", "145878","149028", "159210"  );
+        jokare.stream().map(lopare -> samples.contains(lopare.eventorId)).collect(Collectors.toList());
+
         EventorClient client = getEventorClient();
 
         int i = 0;
 
         for (Lopare jokLopare : jokare) {
-
             if (jokLopare.fodelseDatum.isAfter(oldestRunnerNotIncluded)) {
+                System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn);
                 List<Resultat> resultat = client.getResultat(jokLopare.eventorId, from, to);
                 resultat.stream().forEach(r -> persistResultat(dbi, r, jokLopare));
             }
@@ -47,6 +57,7 @@ public class FetchResultat extends AbstractProcess {
 
         if (resultat.tavling.eventForm.equals("RelaySingleDay") || resultat.tavling.eventForm.equals("PatrolSingleDay")) {
             // TODO borde kanske lagra att individen ställt upp i tävlingen
+
             return;
         }
 

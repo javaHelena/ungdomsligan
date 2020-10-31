@@ -2,11 +2,22 @@ package se.edtek.olresult.internalmodel;
 
 
 public enum BaseClass {
+    NOLL(0, 50),
+    MAX_100(-2, 100),
+    MAX_80(-3, 80),
+    MAX_50(-4, 50),
+    MAX_10(-5,10),
+    MAX_0(-6, 0),
+    H16_EXTRA(106,100), // Extra tävling  - Stockholm Indoor Cup
+    D16_EXTRA(105,100), // Extra tävling  - Stockholm Indoor Cup,
+    ÖM4_RÅNÄS(95),
     OGILTIG(-1),
     H16_KORT(107, 80),
+    D16_KORT(110, 80),
     H14_KORT(108, 80),
     D14_KORT(111, 80),
     D12_KORT(112, 80),
+    H12_KORT(109, 80),
     H18_ELIT(3),
     H20_ELIT(2),
     H21_ELIT(1),
@@ -54,6 +65,8 @@ public enum BaseClass {
     ÖM7(100),
     ÖM8(101),
     ÖM9(102);
+
+
 
     private int k;
     private int maxpoang;

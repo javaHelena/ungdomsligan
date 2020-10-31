@@ -12,7 +12,14 @@ public class EventorTest {
 
 
         EventorClient ec = new EventorClient();
-        ec.getResultat("16", LocalDate.of(2016,5, 1), LocalDate.of(2016, 8, 1));
+        String eventorId = "178211";
+
+        System.out.println("Fetching ");
+
+        ec.getResultat(eventorId, LocalDate.of(2019,1, 1), LocalDate.of(2019, 12, 1));
+
+        List<Lopare> lopare = ec.getLopare("198");
+        //lopare.stream().forEach(l -> System.out.println("Id: " + l.eventorId + " -  Namn: "  + l.fornamn + " " + l.efternamn));
 
     }
 
@@ -21,13 +28,13 @@ public class EventorTest {
 
         List<Lopare> ls = ec.getLopare("198");
         for (Lopare l : ls) {
-            System.out.println(l.eventorId + " " + l.fornamn + " " + l.efternamn + " " + l.fodelseDatum);
+            System.out.println(l.eventorId + l.fodelseDatum);
         }
     }
 
     public static void fetchResultat(String loparId) {
-        LocalDate from = LocalDate.of(2016,1,1);
-        LocalDate to = LocalDate.of(2016,12,31);
+        LocalDate from = LocalDate.of(2019,1,1);
+        LocalDate to = LocalDate.of(2019,12,31);
 
         EventorClient client = new EventorClient();
         client.getResultat(loparId, from, to);
