@@ -33,5 +33,6 @@
   
   eventor#  \i '/Users/helena/Dropbox (Personal)/7.code/1.fromGithub/ungdomsligan/common/src/main/resources/createdatabase.sql'
 
-  
+    eventor#  \i '/Users/helena/Dropbox (Personal)/7.code/1.fromGithub/ungdomsligan/common/src/main/resources/script.sql'
+
   

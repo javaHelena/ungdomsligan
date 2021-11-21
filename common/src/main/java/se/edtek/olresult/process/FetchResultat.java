@@ -16,10 +16,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FetchResultat extends AbstractProcess {
-    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2002, 12,31);
+    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2003, 12,31);
 
-    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2019, 1,1);  ///FOR TEST
-    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2019, 12,31);
+    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2020, 1,1);  ///FOR TEST
+    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2020, 12,31);
 
     public void run() {
 
@@ -42,7 +42,7 @@ public class FetchResultat extends AbstractProcess {
 
         for (Lopare jokLopare : jokare) {
             if (jokLopare.fodelseDatum.isAfter(oldestRunnerNotIncluded)) {
-                System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn);
+                //System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn);
                 List<Resultat> resultat = client.getResultat(jokLopare.eventorId, from, to);
                 resultat.stream().forEach(r -> persistResultat(dbi, r, jokLopare));
             }

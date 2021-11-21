@@ -14,14 +14,25 @@ import java.util.List;
 
 public class Mapper {
 
-    private static final List<String> INGNORABLE_EVENT_IDS = Arrays.asList("23544", "23548", "23612", "26734", "27179");
+    private static final List<String> INGNORABLE_EVENT_IDS =
+            Arrays.asList("27396" ,"27398", "27529", "27738", "27739",
+                    "27742", "27743", "27746", "27972", "28501","30222",
+                    "30223", "30236", "30624", "31081", "31088", "31124",
+                    "31542", "32210", "32592", "32725", "32960");
 
-//    23544 //Mila Stockholm by night
-//    23548 //Mila Stockholm by night
-//    23612 //Mila Stockholm by night
-//    26734 //Konsultkampen
-//    27179 //Mini-KM
-//    21756 // Rånässtafetten Öppna klasser?
+
+//    27396, 27398, 27742, 27743, SkidO
+//    27529, 27738, 27739 //Mila Stockholm by night
+//    27746 Sthlm Indoor Cup
+//    27972 Gävle indoor cup
+//    28501 //Elitmiljö Sthlm
+//    30222, 30223, 30236 //Stof Träningsstafett
+//    30624 Träningstävling Kårsta
+//    31081, 31088, 31124 //Norrortsutmaningen
+//    31542 Klubb Kyllingaröd
+//    32210 Utvecklingsläger sprinten
+//    32592 Elitmiljöträning
+//    32725, 32960 Fredrika Bremer
 
     public static Lopare asLopare(Person person) {
         Lopare lopare = new Lopare();
@@ -42,9 +53,11 @@ public class Mapper {
         resultat.classTypeId = classResult.eventClass.classTypeId;
         resultat.baseClassId = classResult.eventClass.baseClassId;
 
+        //System.out.println(event.eventId + ";" + event.name +  "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId +  "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus );
+
         if (classResult.eventClass.baseClassId == 0) {
-            //System.out.println("EventId, event.name; eventClass.name; baseClass.id; classType.id; eventClassStatus" );
-            //System.out.println(event.eventId + ";" + event.name +  "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId +  "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus );
+//            System.out.println("EventId, event.name; eventClass.name; baseClass.id; classType.id; eventClassStatus" );
+//            System.out.println(event.eventId + ";" + event.name +  "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId +  "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus );
 
 //            System.out.println("Tavling: " + event.name +  " - EventClass: " + classResult.eventClass.name + " - BaseClassId: " + classResult.eventClass.baseClassId +  " och ClassType id: " + classResult.eventClass.classTypeId + " - EventClassStatus: " + classResult.eventClass.eventClassStatus );
         }
@@ -172,7 +185,8 @@ public class Mapper {
         tavling.eventStatusId = event.eventStatusId;
         tavling.eventForm = event.eventForm;
 
-        System.out.println("Tävling: " + tavling.eventorId + " - " + tavling.namn + " - status: " + tavling.eventStatusId + " - form: " + tavling.eventForm) ;
+
+        //System.out.println("Tävling: " + tavling.eventorId + " - " + tavling.namn + " - status: " + tavling.eventStatusId + " - form: " + tavling.eventForm) ;
         return tavling;
     }
 
@@ -186,29 +200,36 @@ public class Mapper {
 
 
         if (INGNORABLE_EVENT_IDS.contains(eventId)) {
-            System.out.println("MAPPER.asBasKlass: Ignorerar tävling " + eventId);
+            //System.out.println("MAPPER.asBasKlass: Ignorerar tävling " + eventId);
             return BaseClass.MAX_0;
         }
 
         if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {
-            System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - använder " + BaseClass.MAX_100.name() + " istället.");
+            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - använder " + BaseClass.MAX_100.name() + " istället.");
             return BaseClass.MAX_100;
         }
 
         if (baseClassId == 0 && classResult.eventClass.classTypeId == 18) {
+            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - använder " + BaseClass.MAX_50.name() + " istället.");
             return BaseClass.MAX_50;
         }
 
+        if (baseClassId == 0 && classResult.eventClass.classTypeId == 19) {
+            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - ClassTypeId 19 - NO RETURN");
+        }
+
         for (BaseClass baseClass : BaseClass.values()) {
+            //System.out.println( "I for loopen - baseklass.getKlass: " + baseClass.getKlass() + "  - baseclass: " + baseClass);
             if (baseClass.getKlass() == baseClassId) {
                 return baseClass;
             }
         }
 
+        //System.out.println("Ogiltig tävling:  " + eventId);
         //return BaseClass.OGILTIG;
-        System.out.println("MAPPER.asBasKlass:  Classresult:  baseClassid: " + classResult.eventClass.baseClassId +
-                " - classTypeId: " + classResult.eventClass.classTypeId +
-                " - name: " + classResult.eventClass.name);
+//        System.out.println("MAPPER.asBasKlass:  Classresult:  baseClassid: " + classResult.eventClass.baseClassId +
+//                " - classTypeId: " + classResult.eventClass.classTypeId +
+//                " - name: " + classResult.eventClass.name);
 
         throw new RuntimeException("Invalid k: " + baseClassId);
     }

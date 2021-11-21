@@ -8,9 +8,6 @@ public enum BaseClass {
     MAX_50(-4, 50),
     MAX_10(-5,10),
     MAX_0(-6, 0),
-    H16_EXTRA(106,100), // Extra tävling  - Stockholm Indoor Cup
-    D16_EXTRA(105,100), // Extra tävling  - Stockholm Indoor Cup,
-    ÖM4_RÅNÄS(95),
     OGILTIG(-1),
     H16_KORT(107, 80),
     D16_KORT(110, 80),
@@ -25,6 +22,7 @@ public enum BaseClass {
     H12(31, 100),
     H14(30, 100),
     H16(29, 100),
+    H16_EXTRA(106,100), // Extra tävling  - Stockholm Indoor Cup
     H18(28),
     H20(25),
     H21(22),
@@ -44,6 +42,7 @@ public enum BaseClass {
     D12(56, 100),
     D14(55, 100),
     D16(54, 100),
+    D16_EXTRA(105,100), // Extra tävling  - Stockholm Indoor Cup,
     D18(53),
     D20(50),
     D21(47),
@@ -59,13 +58,15 @@ public enum BaseClass {
     U1(61, 50),
     U2(60, 50),
     ÖM1(94),
-    ÖM3(96),
+    SIC_M_LÄTT(95),
+    SIC_M_SVÅR(96),
     ÖM4(97),
     ÖM5(98),
     ÖM7(100),
     ÖM8(101),
-    ÖM9(102);
-
+    ÖM9(102),
+    INSK_2KM(123, 10),
+    KLASS_E(125, 50);
 
 
     private int k;

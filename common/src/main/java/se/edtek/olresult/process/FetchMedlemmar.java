@@ -36,10 +36,10 @@ public class FetchMedlemmar extends AbstractProcess {
                     l.eventorId,
                     l.fodelseDatum.toString());
 
-                System.out.println("EventorId: " + l.eventorId +
-                        "  - Namn: " + l.fornamn + " " + l.efternamn +
-                        "  - Fodd: " + l.fodelseDatum
-                );
+//                System.out.println("EventorId: " + l.eventorId +
+//                        "  - Namn: " + l.fornamn + " " + l.efternamn +
+//                        "  - Fodd: " + l.fodelseDatum
+//                            );
         });
 
     }

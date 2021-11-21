@@ -1,6 +1,8 @@
 delete from resultat;
 delete from lopare;
 delete from tavling;
+delete from tmp;
+drop table tmp;
 
 
 
