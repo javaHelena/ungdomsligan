@@ -6,7 +6,6 @@ import se.edtek.olresult.internalmodel.Lopare;
 import se.edtek.olresult.internalmodel.Resultat;
 import se.edtek.olresult.internalmodel.Tavling;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,24 +14,22 @@ import java.util.List;
 public class Mapper {
 
     private static final List<String> INGNORABLE_EVENT_IDS =
-            Arrays.asList("27396" ,"27398", "27529", "27738", "27739",
-                    "27742", "27743", "27746", "27972", "28501","30222",
-                    "30223", "30236", "30624", "31081", "31088", "31124",
-                    "31542", "32210", "32592", "32725", "32960");
+            Arrays.asList("35366", "35563", "35908", "36092", "36272", "36324",
+                    "36429", "36855", "37034", "37035", "37036", "37037", "37038",
+                    "37499", "38114", "38224", "38285", "38430", "38500", "38501",
+                    "38678");
 
-
-//    27396, 27398, 27742, 27743, SkidO
-//    27529, 27738, 27739 //Mila Stockholm by night
-//    27746 Sthlm Indoor Cup
-//    27972 Gävle indoor cup
-//    28501 //Elitmiljö Sthlm
-//    30222, 30223, 30236 //Stof Träningsstafett
-//    30624 Träningstävling Kårsta
-//    31081, 31088, 31124 //Norrortsutmaningen
-//    31542 Klubb Kyllingaröd
-//    32210 Utvecklingsläger sprinten
-//    32592 Elitmiljöträning
-//    32725, 32960 Fredrika Bremer
+    //35366, 35563 Vårcupen 2021
+    //35908 BVSOK sprint km 2021
+    //36272, 36324 Tensta Sprint klubbträning
+    //36429 Sommar OL
+    //36855 KM Sprint
+    //37034, 37035, 37036, 37037, 37038 Y-ringen
+    //37499 Höglands OL med Undomsserien
+    //38114 Elitmiljö Sprint
+    //38224 VIken indoor
+    //38430 Dalaoffensiven spetsträning
+    //38500 38501 Oringen indoor Uppsala
 
     public static Lopare asLopare(Person person) {
         Lopare lopare = new Lopare();
@@ -204,25 +201,41 @@ public class Mapper {
             return BaseClass.MAX_0;
         }
 
+        //Special för 2021
+        if ((eventId == "38678" && baseClassId == 127) || (eventId == "37114")){
+            return BaseClass.MAX_50;  //instead of 100
+        }
+
         if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {
-            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - använder " + BaseClass.MAX_100.name() + " istället.");
+
+            if (eventId == "37114" ) {
+                return BaseClass.MAX_50; //instead of 100
+            }
+
+            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället.");
+            //System.out.println("0 & 17;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_100.name() + ";" + BaseClass.MAX_100.getMaxpoang());
+
             return BaseClass.MAX_100;
         }
 
         if (baseClassId == 0 && classResult.eventClass.classTypeId == 18) {
-            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - använder " + BaseClass.MAX_50.name() + " istället.");
+            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 type id 18 - använder " + BaseClass.MAX_50.name() + " istället.");
+            //System.out.println("0 & 18;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_50.name() + ";" + BaseClass.MAX_50.getMaxpoang());
             return BaseClass.MAX_50;
         }
 
-        if (baseClassId == 0 && classResult.eventClass.classTypeId == 19) {
-            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0 - ClassTypeId 19 - NO RETURN");
-        }
+//        if (baseClassId == 0 && classResult.eventClass.classTypeId == 19) {
+//            System.out.println("MAPPER.asBasKlass: BaseclassId = 0 type id 19 - ClassTypeId 19 - NO RETURN");
+//
+//        }
 
         for (BaseClass baseClass : BaseClass.values()) {
-            //System.out.println( "I for loopen - baseklass.getKlass: " + baseClass.getKlass() + "  - baseclass: " + baseClass);
             if (baseClass.getKlass() == baseClassId) {
+                //System.out.println( "MAPPER.asBasKlass: I for loopen - baseklass.getKlass (== baseClassId) : " + baseClass.getKlass() + "  - baseclass: " + baseClass);
+                //System.out.println("FOR LOOP;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + baseClass.name() + ";" + baseClass.getMaxpoang());
                 return baseClass;
             }
+            //System.out.println( "NO MATCHING???? *****  MAPPER.asBasKlass: I for loopen - baseklass.getKlass: " + baseClass.getKlass() + "  - baseclass: " + baseClass);
         }
 
         //System.out.println("Ogiltig tävling:  " + eventId);

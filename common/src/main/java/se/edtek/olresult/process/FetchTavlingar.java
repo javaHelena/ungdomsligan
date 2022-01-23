@@ -13,6 +13,7 @@ import java.util.UUID;
 public class FetchTavlingar extends AbstractProcess {
 
     public void run() {
+        System.out.println("Start - Running FetchTävlingar!");
 
         DBI dbi = getDBI();
         TavlingDAO dao = dbi.onDemand(TavlingDAO.class);
@@ -28,6 +29,7 @@ public class FetchTavlingar extends AbstractProcess {
             dao.update(t.eventorId, t.disciplineId);
             //System.out.println("FETCHTAVLINGAR: Tävling: " + tavling.namn + " - status: " + tavling.eventStatusId + " - form: " + tavling.eventForm) ;
         }
+        System.out.println("Done - Running FetchTävlingar!");
     }
 
     public static void main(String[] args) {

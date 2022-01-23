@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class CalculateResult extends AbstractProcess {
 
     public void run() {
+        System.out.println("Start - Running CalculateResultat!");
 
         DBI dbi = getDBI();
 
@@ -25,6 +26,7 @@ public class CalculateResult extends AbstractProcess {
             calculatePoints(resultatDAO, lopareDAO, j);
            // System.out.println("Calculating points for " + j.fornamn + " " + j.efternamn);
         });
+        System.out.println("Done - Running CalculateResultat!");
     }
 
     private void calculatePoints(ResultatDAO resultatDAO, LopareDAO lopareDAO, Lopare lopare) {

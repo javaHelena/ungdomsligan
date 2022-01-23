@@ -16,12 +16,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FetchResultat extends AbstractProcess {
-    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2003, 12,31);
+    //Update these days every year
+    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2004, 12,31);
 
-    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2020, 1,1);  ///FOR TEST
-    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2020, 12,31);
+    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2021, 1,1);  ///FOR TEST
+    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2021, 12,31);
 
     public void run() {
+        System.out.println("Start - Running FetchResultat!");
 
         LocalDate from = YEAR_START_DATE_LD;
         LocalDate to = YEAR_END_DATE_LD;
@@ -42,13 +44,15 @@ public class FetchResultat extends AbstractProcess {
 
         for (Lopare jokLopare : jokare) {
             if (jokLopare.fodelseDatum.isAfter(oldestRunnerNotIncluded)) {
-                //System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn);
+                System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn);
                 List<Resultat> resultat = client.getResultat(jokLopare.eventorId, from, to);
                 resultat.stream().forEach(r -> persistResultat(dbi, r, jokLopare));
             }
 
 
         }
+        System.out.println("Done - Running FetchResultat!");
+
     }
 
     private void persistResultat(DBI dbi, Resultat resultat, Lopare lopare) {

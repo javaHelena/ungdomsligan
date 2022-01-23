@@ -12,6 +12,7 @@ public class FetchMedlemmar extends AbstractProcess {
 
 
     public void run() {
+        System.out.println("Start - Running FetchMedlemmar!");
         LopareDAO dao = getDBI().onDemand(LopareDAO.class);
         List<Lopare> jokLopare = getEventorClient().getLopare("198");
 
@@ -41,6 +42,8 @@ public class FetchMedlemmar extends AbstractProcess {
 //                        "  - Fodd: " + l.fodelseDatum
 //                            );
         });
+
+        System.out.println("Done - Running FetchMedlemmar!");
 
     }
 

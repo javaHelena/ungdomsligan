@@ -2,7 +2,7 @@ package se.edtek.olresult.internalmodel;
 
 
 public enum BaseClass {
-    NOLL(0, 50),
+    NOLL_50(0, 50),
     MAX_100(-2, 100),
     MAX_80(-3, 80),
     MAX_50(-4, 50),
@@ -66,7 +66,15 @@ public enum BaseClass {
     ÖM8(101),
     ÖM9(102),
     INSK_2KM(123, 10),
-    KLASS_E(125, 50);
+    KLASS_E(125, 50),
+
+    //Nya 2021:
+    MO_M_LÄTT(124, 10),     //Motionsorientering
+    MO_MESVÅR3(127, 100),   //Motionsorientering
+    MO_MESVÅR5(128, 100),   //Motionsorientering
+    MO_SVÅR(130, 100);      //Motionsorientering
+
+
 
 
     private int k;

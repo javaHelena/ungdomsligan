@@ -5,12 +5,12 @@ inner join lopare l on l.eventorid = r.lopare
 inner join tavling t on t.eventorid = r.tavling;
 
 select l.fornamn, l.efternamn, l.fodelsedatum, l.poang, l.vinster, l.hundrapoangare from lopare l
-where l.fodelsedatum > '2003-12-31'
+where l.fodelsedatum > '2004-12-31'
 order by l.poang desc, l.vinster desc, l.hundrapoangare desc;
 
 
 select  l.eventorid, l.fornamn, l.efternamn, l.fodelsedatum, l.poang, l.vinster, l.hundrapoangare into tmp from lopare l
-where l.fodelsedatum > '2003-12-31' and l.fodelsedatum < '2020-01-01'
+where l.fodelsedatum > '2004-12-31' and l.fodelsedatum < '2020-01-01'
 order by l.poang desc, l.vinster desc, l.hundrapoangare desc;
 
 \copy lopare TO '/Users/helena/ungdomsligan-lopare.csv' DELIMITER ',' CSV HEADER;

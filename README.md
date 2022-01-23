@@ -24,10 +24,12 @@
 ## Postgres med docker compose: 
   
   $ docker-compose up
+
+  $ docker exec -it ungdomsligan-postgres-1  (or just connect with IntelliJ db)
   
   Gå in i psql:
   
-  $ psql -U postgres -h localhost -d eventor
+  '# psql -U postgres -h localhost -d eventor
   
   Ladda in datasbasscriptet: 
   
