@@ -2,9 +2,7 @@ DROP TABLE IF EXISTS resultat;
 DROP TABLE IF EXISTS lopare;
 DROP TABLE IF EXISTS tavling;
 
-CREATE DATABASE eventor;
-
-CREATE TABLE lopare (
+CREATE TABLE IF NOT EXISTS lopare (
                         id VARCHAR(40) PRIMARY KEY,
                         fornamn VARCHAR(40),
                         efternamn VARCHAR(40),
@@ -15,7 +13,7 @@ CREATE TABLE lopare (
                         poang INT
 );
 
-CREATE TABLE tavling (
+CREATE TABLE IF NOT EXISTS tavling (
                          id VARCHAR(40) PRIMARY KEY,
                          namn VARCHAR(100),
                          eventorid VARCHAR(40),
@@ -25,7 +23,7 @@ CREATE TABLE tavling (
                          eventform VARCHAR(40)
 );
 
-CREATE TABLE resultat (
+CREATE TABLE IF NOT EXISTS resultat (
                           id VARCHAR(40) PRIMARY KEY,
                           lopare VARCHAR(40) REFERENCES lopare(id),
                           tavling VARCHAR(40) REFERENCES tavling(id),
