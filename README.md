@@ -9,7 +9,7 @@
 ## Konfiguration
 
 * Skapa databasschema
-* Sätt datum
+* Sätt rätt datum för åldersspannet i script.sql
 
 ## Process
 
