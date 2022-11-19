@@ -9,7 +9,7 @@
 ## Konfiguration
 
 * Skapa databasschema
-* Sätt rätt datum för åldersspannet i script.sql
+* Sätt rätt datum för åldersspannet i script.sql, FetchResultat.java & EventorTest.java
 
 ## Process
 

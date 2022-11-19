@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 public class FetchResultat extends AbstractProcess {
     //Update these days every year
-    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2004, 12,31);
+    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2005, 12,31);
 
-    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2021, 1,1);  ///FOR TEST
-    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2021, 12,31);
+    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2022, 1,1);  ///FOR TEST
+    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2022, 12,31);
 
     public void run() {
         System.out.println("Start - Running FetchResultat!");

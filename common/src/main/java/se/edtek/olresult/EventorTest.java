@@ -17,7 +17,7 @@ public class EventorTest {
         //System.out.println("Fetching ");
 
         //Uppdatera datum varje år
-        ec.getResultat(eventorId, LocalDate.of(2021,1, 1), LocalDate.of(2021, 12, 1));
+        ec.getResultat(eventorId, LocalDate.of(2022,1, 1), LocalDate.of(2022, 12, 1));
 
         List<Lopare> lopare = ec.getLopare("198");
         //lopare.stream().forEach(l -> System.out.println("Id: " + l.eventorId + " -  Namn: "  + l.fornamn + " " + l.efternamn));
@@ -35,8 +35,8 @@ public class EventorTest {
 
     public static void fetchResultat(String loparId) {
         //Uppdatera datum varje år
-        LocalDate from = LocalDate.of(2021,1,1);
-        LocalDate to = LocalDate.of(2021,12,31);
+        LocalDate from = LocalDate.of(2022,1,1);
+        LocalDate to = LocalDate.of(2022,12,31);
 
         EventorClient client = new EventorClient();
         client.getResultat(loparId, from, to);
