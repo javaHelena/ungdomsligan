@@ -6,7 +6,7 @@ import se.edtek.olresult.EventorClient;
 public abstract class AbstractProcess {
 
     public DBI getDBI() {
-        return new DBI("jdbc:postgresql://localhost:5433/eventor");
+        return new DBI("jdbc:postgresql://localhost:5437/eventor");
     }
 
     public EventorClient getEventorClient() {
