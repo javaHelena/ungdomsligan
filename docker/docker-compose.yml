@@ -4,6 +4,7 @@ services:
     image: postgres:11.2
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: eventor
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
     ports:
-      - '5433:5432'
+      - '5437:5432'

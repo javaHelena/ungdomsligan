@@ -1,6 +1,6 @@
-DROP TABLE resultat;
-DROP TABLE lopare;
-DROP TABLE tavling;
+DROP TABLE IF EXISTS resultat;
+DROP TABLE IF EXISTS lopare;
+DROP TABLE IF EXISTS tavling;
 
 CREATE DATABASE eventor;
 
