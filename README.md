@@ -14,7 +14,7 @@
 ## Process
 
 1. FetchMedlemmar
-2. FetchResultat
+2. FetchResultat (Fånga nya k värden / eventor events, lägg till i BaseClass)
 3. FetchTavlingar
 4. CalculateResult
 5. Kör resource/script.sql
