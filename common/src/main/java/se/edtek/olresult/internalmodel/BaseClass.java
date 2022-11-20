@@ -72,8 +72,10 @@ public enum BaseClass {
     MO_M_LÄTT(124, 10),     //Motionsorientering
     MO_MESVÅR3(127, 100),   //Motionsorientering
     MO_MESVÅR5(128, 100),   //Motionsorientering
-    MO_SVÅR(130, 100);      //Motionsorientering
+    MO_SVÅR(130, 100),      //Motionsorientering
 
+    //Nya 2022:
+    MO_SVÅR_3(129,100);
 
 
 
