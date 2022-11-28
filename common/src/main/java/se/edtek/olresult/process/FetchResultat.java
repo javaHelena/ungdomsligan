@@ -1,5 +1,6 @@
 package se.edtek.olresult.process;
 
+import lombok.val;
 import org.skife.jdbi.v2.DBI;
 import se.edtek.olresult.EventorClient;
 import se.edtek.olresult.db.LopareDAO;
@@ -44,7 +45,8 @@ public class FetchResultat extends AbstractProcess {
 
         for (Lopare jokLopare : jokare) {
             if (jokLopare.fodelseDatum.isAfter(oldestRunnerNotIncluded)) {
-                System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn);
+                System.out.println("*******************************************************");
+                System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn + " id: " + jokLopare.eventorId);
                 List<Resultat> resultat = client.getResultat(jokLopare.eventorId, from, to);
                 resultat.stream().forEach(r -> persistResultat(dbi, r, jokLopare));
             }
@@ -61,11 +63,20 @@ public class FetchResultat extends AbstractProcess {
 
         if (resultat.tavling.eventForm.equals("RelaySingleDay") || resultat.tavling.eventForm.equals("PatrolSingleDay")) {
             // TODO borde kanske lagra att individen ställt upp i tävlingen
-
+//            System.out.println("Löpare: " + lopare.fornamn + " " + lopare.efternamn + " " +
+//                    "deltog i eventform: " + resultat.tavling.eventForm + " - " +
+//                    "tävling: " + resultat.tavling.eventorId + " " + resultat.tavling.namn);
             return;
         }
 
         ResultatDAO dao = dbi.onDemand(ResultatDAO.class);
+
+        val loparLista =  Arrays.asList("159210", "132748", "181327", "198398" );
+        // Checking results for first 4: Arvidas, Benjamin, Max, Annika
+
+        if( loparLista.contains(lopare.eventorId)) {
+        System.out.println("Persinsting resultat:  Placering: " + resultat.placering + " - " +  resultat.tavling.eventorId + " - " + resultat.tavling.namn);
+        }
 
         dao.create(
                 UUID.randomUUID().toString(),

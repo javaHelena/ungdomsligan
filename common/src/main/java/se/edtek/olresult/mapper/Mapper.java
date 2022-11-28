@@ -14,13 +14,16 @@ import java.util.List;
 public class Mapper {
 
     private static final List<String> INGNORABLE_EVENT_IDS =
-            Arrays.asList("35366", "35563", "35908", "36092", "36272", "36324",
-                    "36429", "36855", "37034", "37035", "37036", "37037", "37038",
-                    "37499", "38114", "38224", "38285", "38430", "38500", "38501",
-                    "38678");
+            Arrays.asList(
+                    "36684", "36331", "36683", "36764", "38062", "38857", "38974", "38975",
+                    "39147", "39233", "39235", "39324", "39470", "39525", "39532", "39575",
+                    "39659", "39764", "39861", "39918", "40167", "40752", "41154", "42167",
+                    "42616");
 
+
+    //Up until 2021
     //35366, 35563 Vårcupen 2021
-    //35908 BVSOK sprint km 2021
+    //35908, 36092 BVSOK sprint km 2021
     //36272, 36324 Tensta Sprint klubbträning
     //36429 Sommar OL
     //36855 KM Sprint
@@ -28,6 +31,7 @@ public class Mapper {
     //37499 Höglands OL med Undomsserien
     //38114 Elitmiljö Sprint
     //38224 VIken indoor
+    //38285 Novemberserien E1 Veteran/motion OL
     //38430 Dalaoffensiven spetsträning
     //38500 38501 Oringen indoor Uppsala
 
