@@ -24,7 +24,7 @@
 ## Postgres med docker compose: 
 
 Spinn upp en postgres container och kör init-scriptet som ligger under docker/postgres  
-  $ docker-compose up -f docker/docker-compose up
+  $ docker-compose -f docker/docker-compose.yml up
 
 
 For DB-access i conteinter:

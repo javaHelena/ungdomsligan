@@ -15,10 +15,10 @@ public class Mapper {
 
     private static final List<String> INGNORABLE_EVENT_IDS =
             Arrays.asList(
-                    "36684", "36331", "36683", "36764", "38062", "38857", "38974", "38975",
-                    "39147", "39233", "39235", "39324", "39470", "39525", "39532", "39575",
-                    "39659", "39764", "39861", "39918", "40167", "40752", "41154", "42167",
-                    "42616");
+                    "36331","36683","36684","36764","38062","38857","38974","38975",
+                    "39147","39233","39235","39324","39470","39525","39532","39575",
+                    "39659","39764", "39861","39918","40167","40752","41154","42167",
+                    "42616", "43469");
 
 
     //Up until 2021
@@ -85,7 +85,7 @@ public class Mapper {
         if (resultat.lopare.fodelseDatum != null) {
             f = resultat.lopare.fodelseDatum.toString();
         }
-        //System.out.println("MAPPER: Resultat för: " + id + " - " + t + " - klass: " + bkl + "  - maxpoäng: " + x + "  (EventClass: "  + ex + " BaseClassId = " + bx + " och ClassType id: " + cx + ")");
+        //System.out.println("MAPPER.asResultat: Resultat för: " + id + " - " + t + " - klass: " + bkl + "  - maxpoäng: " + x + "  (EventClass: "  + ex + " BaseClassId = " + bx + " och ClassType id: " + cx + ")");
 
         // ************************ for Helena ***************** //
 
@@ -128,7 +128,7 @@ public class Mapper {
                     resultat.poang = resultat.maxpoang - resultat.poangReduktion;
                 }
             } else {
-                //System.out.println("MAPPER: Maxpoäng för tävling : " + resultat.tavling.namn + " är " + resultat.maxpoang);
+                //System.out.println("MAPPER.populate: Maxpoäng för tävling : " + resultat.tavling.namn + " är " + resultat.maxpoang);
             }
         }
     }
@@ -205,8 +205,9 @@ public class Mapper {
             return BaseClass.MAX_0;
         }
 
-        //Special för 2021
-        if ((eventId == "38678" && baseClassId == 127) || (eventId == "37114")){
+        //Special för 2022
+        if (eventId.equals("43200") && baseClassId == 127){  //U3 som var klassad för maxpoäng 100
+            System.out.println("Eventor id 43200 och baseclassid 127 ->> MAX 50");
             return BaseClass.MAX_50;  //instead of 100
         }
 
@@ -216,7 +217,7 @@ public class Mapper {
                 return BaseClass.MAX_50; //instead of 100
             }
 
-            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället.");
+            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället. - EventorId: " + eventId);
             //System.out.println("0 & 17;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_100.name() + ";" + BaseClass.MAX_100.getMaxpoang());
 
             return BaseClass.MAX_100;

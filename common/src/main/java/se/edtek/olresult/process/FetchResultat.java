@@ -71,7 +71,7 @@ public class FetchResultat extends AbstractProcess {
 
         ResultatDAO dao = dbi.onDemand(ResultatDAO.class);
 
-        val loparLista =  Arrays.asList("159210", "132748", "181327", "198398" );
+        val loparLista =  Arrays.asList("159210", "132748", "181327", "198398", "172682" );
         // Checking results for first 4: Arvidas, Benjamin, Max, Annika
 
         if( loparLista.contains(lopare.eventorId)) {
