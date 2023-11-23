@@ -1,6 +1,10 @@
 package se.edtek.olresult.mapper;
 
-import se.edtek.olresult.eventormodel.*;
+import se.edtek.olresult.eventormodel.ClassResult;
+import se.edtek.olresult.eventormodel.Event;
+import se.edtek.olresult.eventormodel.Person;
+import se.edtek.olresult.eventormodel.PersonResult;
+import se.edtek.olresult.eventormodel.Result;
 import se.edtek.olresult.internalmodel.BaseClass;
 import se.edtek.olresult.internalmodel.Lopare;
 import se.edtek.olresult.internalmodel.Resultat;
@@ -14,26 +18,36 @@ import java.util.List;
 public class Mapper {
 
     private static final List<String> INGNORABLE_EVENT_IDS =
-            Arrays.asList(
-                    "36331","36683","36684","36764","38062","38857","38974","38975",
-                    "39147","39233","39235","39324","39470","39525","39532","39575",
-                    "39659","39764", "39861","39918","40167","40752","41154","42167",
-                    "42616", "43469");
+            Arrays.asList("46178", "46178", "38907", "46377", "43305", "46135", "45030", "44344", "44345", "45245",
+                    "42704", "42887", "42908", "40037", "46730", "44222", "44506", "44508", "45850", "44379", "43656",
+                    "46607", "42765", "42974", "42975", "42976", "43588", "44123", "44272", "43935", "43946", "44239",
+                    "43771", "43982", "44443");
 
 
-    //Up until 2021
-    //35366, 35563 Vårcupen 2021
-    //35908, 36092 BVSOK sprint km 2021
-    //36272, 36324 Tensta Sprint klubbträning
-    //36429 Sommar OL
-    //36855 KM Sprint
-    //37034, 37035, 37036, 37037, 37038 Y-ringen
-    //37499 Höglands OL med Undomsserien
-    //38114 Elitmiljö Sprint
-    //38224 VIken indoor
-    //38285 Novemberserien E1 Veteran/motion OL
-    //38430 Dalaoffensiven spetsträning
-    //38500 38501 Oringen indoor Uppsala
+    //2023
+    //46178 Daladubbeln öppna klasser
+    //38907 Daladubbeln patrull
+    //46377 Dm stafett individuella öppna klasser
+    //43305 Gävle Indoor
+    //46135 Höglands OL anneberg
+    //45030 IFK Lidingö Microsprint
+    //44344, 44345 Juniorcam Åbytravet, Stjärnnatten
+    //45245 Kompasshuset
+    //42704, 42887, 42908 Mareld Stockholm by night
+    //40037 Måsenstafetten, individuella öppna klasser
+    //46730 MiniKM
+    //44222, 4456, 44508 - Motionsorientering Ursvik
+    //45850 Motionsorientering nationaldagen
+    //44379 MTBO Uppsala
+    //43656 Oringen träningsbanor
+    //46607 Roslagsveteranerna
+    //42765 SkidO
+    //42974, 42975, 42976 Stockholm City Cup
+    //43588 Stockholm Indoor
+    //44123 Vintercupen #10 HärlövsIF
+    //44272, 43935, 43946, 44239 Vinterserien
+    //43771, 43982, 44443 VNC Vinternatt Cup 3, 5, 6
+
 
     public static Lopare asLopare(Person person) {
         Lopare lopare = new Lopare();
@@ -54,16 +68,23 @@ public class Mapper {
         resultat.classTypeId = classResult.eventClass.classTypeId;
         resultat.baseClassId = classResult.eventClass.baseClassId;
 
-        //System.out.println(event.eventId + ";" + event.name +  "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId +  "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus );
+//        System.out.println(resultat.tavling.eventorId + ";"
+//                + resultat.tavling.namn +  "; "
+//                + resultat.klass + "; "
+//                + resultat.baseClassId +  "; "
+//                + resultat.classTypeId + "; "
+//                + resultat.baseClass.name() + "; "
+//                + resultat.baseClass.getMaxpoang() + "; "
+//                + resultat.baseClass.getKlass()
+//                + classResult.eventClass.eventClassStatus );
 
         if (classResult.eventClass.baseClassId == 0) {
 //            System.out.println("EventId, event.name; eventClass.name; baseClass.id; classType.id; eventClassStatus" );
-//            System.out.println(event.eventId + ";" + event.name +  "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId +  "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus );
-
+//            System.out.println(event.eventId + ";" + event.name + "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId + "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus);
 //            System.out.println("Tavling: " + event.name +  " - EventClass: " + classResult.eventClass.name + " - BaseClassId: " + classResult.eventClass.baseClassId +  " och ClassType id: " + classResult.eventClass.classTypeId + " - EventClassStatus: " + classResult.eventClass.eventClassStatus );
         }
 
-        resultat.baseClass = asBasklass(resultat.baseClassId, classResult, event.eventId);
+        resultat.baseClass = asBasklass(resultat.baseClassId, classResult, event);
         resultat.maxpoang = resultat.baseClass.getMaxpoang();
 
         // ************************ for Helena ***************** //
@@ -72,6 +93,7 @@ public class Mapper {
         String id = resultat.lopare.eventorId;
         String p = resultat.lopare.fornamn + "  " + resultat.lopare.fornamn;
         String t = resultat.tavling.namn;
+        String tid = resultat.tavling.eventorId;
         String kl = resultat.tavling.eventClassificationName;
         int po = resultat.poang;
         int pl = resultat.placering;
@@ -85,7 +107,7 @@ public class Mapper {
         if (resultat.lopare.fodelseDatum != null) {
             f = resultat.lopare.fodelseDatum.toString();
         }
-        //System.out.println("MAPPER.asResultat: Resultat för: " + id + " - " + t + " - klass: " + bkl + "  - maxpoäng: " + x + "  (EventClass: "  + ex + " BaseClassId = " + bx + " och ClassType id: " + cx + ")");
+        //System.out.println("MAPPER.asResultat: Resultat för löpare: " + id + " - " + tid + " - " + t + " - klass: " + bkl + "  - maxpoäng: " + x + "  (EventClass: "  + ex + " BaseClassId = " + bx + " och ClassType id: " + cx + ")");
 
         // ************************ for Helena ***************** //
 
@@ -93,7 +115,6 @@ public class Mapper {
     }
 
     public static Resultat asIndSingleDayResult(Event event, ClassResult classResult, String eventorIdPerson) {
-
 
         Resultat resultat = asResultat(event, classResult, eventorIdPerson);
         populate(resultat, classResult.personResult.get(0).result);
@@ -126,6 +147,9 @@ public class Mapper {
                     resultat.poang = 10;
                 } else {
                     resultat.poang = resultat.maxpoang - resultat.poangReduktion;
+                    if (resultat.poang < 0) {
+                        resultat.poang = 10;
+                    }
                 }
             } else {
                 //System.out.println("MAPPER.populate: Maxpoäng för tävling : " + resultat.tavling.namn + " är " + resultat.maxpoang);
@@ -140,10 +164,6 @@ public class Mapper {
         for (PersonResult pr : classResult.personResult) {
 
             Resultat resultat = asResultat(event, classResult, eventorIdPerson);
-//            System.out.println("Tävling: " + event.name +
-//                    " - baseClassId: " + classResult.eventClass.baseClassId +
-//                    " - classTypeId: " + classResult.eventClass.classTypeId +
-//                    " - name " + classResult.eventClass.name);
             if (event.eventForm.equals("IndSingleDay")) {
                 populate(resultat, pr.result);
 
@@ -164,9 +184,28 @@ public class Mapper {
         if (timeDiff == null) {
             return 0;
         }
-        int index = timeDiff.indexOf(":");
-        int minutesAfter = Integer.parseInt(timeDiff.substring(0, index));
-        return minutesAfter;
+        return calculateTotalMinutes(timeDiff);
+    }
+
+    private static int calculateTotalMinutes(String timeDiff) {
+        String[] parts = timeDiff.split(":");
+        int hours = 0;
+        int minutes;
+
+        if (parts.length == 3) {
+            hours = Integer.parseInt(parts[0]);
+            minutes = Integer.parseInt(parts[1]);
+            // Log if the time difference is over an hour
+            int minutesAfter = hours * 60 + minutes;
+            //System.out.println("The time difference for is over an hour: " + timeDiff + ". Minutes after: " + minutesAfter);
+        } else if (parts.length == 2) {
+            minutes = Integer.parseInt(parts[0]);
+            // Optionally, handle seconds as well
+            // int seconds = Integer.parseInt(parts[1]);
+        } else {
+            throw new IllegalArgumentException("Invalid time format for " + timeDiff);
+        }
+        return hours * 60 + minutes;
     }
 
     public static Tavling asTavling(Event event) {
@@ -186,8 +225,6 @@ public class Mapper {
         tavling.eventStatusId = event.eventStatusId;
         tavling.eventForm = event.eventForm;
 
-
-        //System.out.println("Tävling: " + tavling.eventorId + " - " + tavling.namn + " - status: " + tavling.eventStatusId + " - form: " + tavling.eventForm) ;
         return tavling;
     }
 
@@ -197,25 +234,15 @@ public class Mapper {
         return lopare;
     }
 
-    public static BaseClass asBasklass(int baseClassId, ClassResult classResult, String eventId) {
+    public static BaseClass asBasklass(int baseClassId, ClassResult classResult, Event event) {
 
 
-        if (INGNORABLE_EVENT_IDS.contains(eventId)) {
-            //System.out.println("MAPPER.asBasKlass: Ignorerar tävling " + eventId);
+        if (INGNORABLE_EVENT_IDS.contains(event.eventId)) {
+            System.out.println("MAPPER.asBasKlass: Ignorerar tävling " + event.eventId + " - " + event.name);
             return BaseClass.MAX_0;
         }
 
-        //Special för 2022
-        if (eventId.equals("43200") && baseClassId == 127){  //U3 som var klassad för maxpoäng 100
-            System.out.println("Eventor id 43200 och baseclassid 127 ->> MAX 50");
-            return BaseClass.MAX_50;  //instead of 100
-        }
-
-        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {
-
-            if (eventId == "37114" ) {
-                return BaseClass.MAX_50; //instead of 100
-            }
+        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {   // Ska inte vara Base Class NOLL_50, därav specialkoll
 
             //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället. - EventorId: " + eventId);
             //System.out.println("0 & 17;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_100.name() + ";" + BaseClass.MAX_100.getMaxpoang());
@@ -228,11 +255,6 @@ public class Mapper {
             //System.out.println("0 & 18;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_50.name() + ";" + BaseClass.MAX_50.getMaxpoang());
             return BaseClass.MAX_50;
         }
-
-//        if (baseClassId == 0 && classResult.eventClass.classTypeId == 19) {
-//            System.out.println("MAPPER.asBasKlass: BaseclassId = 0 type id 19 - ClassTypeId 19 - NO RETURN");
-//
-//        }
 
         for (BaseClass baseClass : BaseClass.values()) {
             if (baseClass.getKlass() == baseClassId) {

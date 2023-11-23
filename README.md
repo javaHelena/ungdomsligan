@@ -28,7 +28,7 @@ Spinn upp en postgres container och kör init-scriptet som ligger under docker/p
 
 
 For DB-access i conteinter:
- $ docker exec -it ungdomsligan-postgres-1  (or just connect with IntelliJ db)
+ $ docker exec -it ungdomsligan-postgres-1 sh  (or just connect with IntelliJ db)
   
   Gå in i psql:
   '# psql -U postgres -h localhost -d eventor

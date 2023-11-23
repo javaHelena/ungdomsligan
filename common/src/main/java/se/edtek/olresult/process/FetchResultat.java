@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 
 public class FetchResultat extends AbstractProcess {
     //Update these days every year
-    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2005, 12,31);
+    public static final LocalDate OLDEST_BIRTH_DATE_LD = LocalDate.of(2006, 12,31);
 
-    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2022, 1,1);  ///FOR TEST
-    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2022, 12,31);
+    public static final LocalDate YEAR_START_DATE_LD = LocalDate.of(2023, 1,1);  ///FOR TEST
+    public static final LocalDate YEAR_END_DATE_LD = LocalDate.of(2023, 11,1);
 
     public void run() {
         System.out.println("Start - Running FetchResultat!");
@@ -50,18 +50,16 @@ public class FetchResultat extends AbstractProcess {
                 List<Resultat> resultat = client.getResultat(jokLopare.eventorId, from, to);
                 resultat.stream().forEach(r -> persistResultat(dbi, r, jokLopare));
             }
-
-
         }
         System.out.println("Done - Running FetchResultat!");
-
     }
 
     private void persistResultat(DBI dbi, Resultat resultat, Lopare lopare) {
+        //System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn + " id: " + jokLopare.eventorId);
 
         resultat.tavling.id = persistTavling(dbi, resultat.tavling);
 
-        if (resultat.tavling.eventForm.equals("RelaySingleDay") || resultat.tavling.eventForm.equals("PatrolSingleDay")) {
+        if ("RelaySingleDay".equals(resultat.tavling.eventForm) || "PatrolSingleDay".equals(resultat.tavling.eventForm)) {
             // TODO borde kanske lagra att individen ställt upp i tävlingen
 //            System.out.println("Löpare: " + lopare.fornamn + " " + lopare.efternamn + " " +
 //                    "deltog i eventform: " + resultat.tavling.eventForm + " - " +
@@ -71,11 +69,11 @@ public class FetchResultat extends AbstractProcess {
 
         ResultatDAO dao = dbi.onDemand(ResultatDAO.class);
 
-        val loparLista =  Arrays.asList("159210", "132748", "181327", "198398", "172682" );
-        // Checking results for first 4: Arvidas, Benjamin, Max, Annika
+        val loparLista =  Arrays.asList("159210", "132748", "181327", "64068", "64067", "144776" );
+        // Checking results for first : Benjamin, Max, Arvidas, Julia, Ida, HampusL
 
-        if( loparLista.contains(lopare.eventorId)) {
-        System.out.println("Persinsting resultat:  Placering: " + resultat.placering + " - " +  resultat.tavling.eventorId + " - " + resultat.tavling.namn);
+        if( loparLista.contains(lopare.eventorId)) {  // Printing known runners to check for reasonable results
+        //System.out.println("Persisting result for Jokare: " + lopare.fornamn + " " + lopare.efternamn + " id: " + lopare.eventorId + ": Placering " + resultat.placering + " - " +  resultat.tavling.eventorId + " - " + resultat.tavling.namn);
         }
 
         dao.create(

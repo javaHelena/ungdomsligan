@@ -1,30 +1,43 @@
-select distinct t.eventorid, t.namn, r.klass, r.baseclassid, r.classtypeid, r.baseclass, r.maxpoang
+-- FÖR LISTOR
+
+--Select alla tävlingar och alla klasser i varje tävling med BaseClass ID ohch baseClass namn, maxpoäng och lite mer info.
+select distinct t.eventorid,  t.namn, r.klass, r.baseclass, r.baseclassid, r.maxpoang, r.classtypeid,  t.disciplineid, t.eventclassificationid, t.eventform
 from resultat r
-         inner join tavling t on r.tavling = t.id
-order by t.eventorid, classtypeid;
+         left join tavling  t on t.id = r.tavling
+order by t.namn, t.eventorid, r.klass;
 
-
-select distinct t.eventorid, t.namn, r.klass, r.baseclassid, r.classtypeid, r.baseclass, r.maxpoang
+--Select alla tävlingar och klasser och gruppera med antal deltagare i varje klass.
+select distinct t.eventorid,  t.namn, count(*), r.klass, r.baseclass, r.baseclassid, r.maxpoang, r.classtypeid, t.disciplineid, t.eventclassificationid, t.eventform
 from resultat r
-         inner join tavling t on r.tavling = t.id
-order by t.eventorid, classtypeid;
+         left join tavling  t on t.id = r.tavling
+group by t.eventorid,  t.namn, r.klass, r.baseclass, r.maxpoang, r.classtypeid, r.baseclassid, t.disciplineid, t.eventclassificationid, t.eventform
+order by t.namn, t.eventorid, r.klass;
 
 
-
-select *
-from resultat
-where lopare = 'a8507c22-e169-400f-a79a-17e14e9d14a8';
-
-select distinct l.eventorid, l.fornamn, l.efternamn, r.placering, r.poang, r.timediff,  t.eventorid, t.namn, r.klass,  r.maxpoang, r.baseclass, r.baseclassid, r.classtypeid
+--- Select väsentlig info om löpares alla tävlingar, resultat, placering, timediff, poängreduction och slutpoäng
+select distinct l.eventorid, l.fornamn, l.efternamn, t.eventorid, t.namn, r.klass, r.baseclass, r.baseclassid, r.placering, r.poang, r.timediff, r.poangreduktion, r.maxpoang, r.classtypeid,  t.disciplineid, t.eventclassificationid, t.eventform
 from resultat r
-         inner join tavling t on r.tavling = t.id
-         inner join lopare l on r.lopare = l.id
+         left join tavling  t on t.id = r.tavling
+         left join lopare l on l.id = r.lopare
 order by l.eventorid;
 
 
-where lopare = 'b6979e51-ee76-40be-b147-fbe2864ed793';
+--Select alla resultat för en specifik löpare:
+select distinct r.placering, r.timediff, r.poangreduktion, r.poang, l.eventorid, l.fornamn, l.efternamn, t.eventorid,  t.namn, r.klass, r.baseclass, r.baseclassid, r.maxpoang, r.classtypeid,  t.disciplineid, t.eventclassificationid, t.eventform
+from resultat r
+         left join tavling  t on t.id = r.tavling
+         left join lopare l on l.id = r.lopare
+where t.eventorid = '45985';
+-- Malte Fogeby: 162257
 
+-- Select alla lopare
+select distinct r.lopare, l.eventorId, l.fornamn, l.efternamn, l.fodelsedatum
+from lopare l
+         left join resultat r on r.lopare = l.id
+order by l.eventorId;
 
-where lopare = 'd5942494-9cae-4680-9196-5fb3b5014c9b'; John Nyman
+-- Select antal löpare, grupperat på födelseår
+from lopare
+group by fodelsedatum
+order by fodelsedatum;
 
-where lopare = 'a8507c22-e169-400f-a79a-17e14e9d14a8';  DAVID Nyman

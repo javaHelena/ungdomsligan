@@ -50,30 +50,23 @@ public class EventorClient {
             return Collections.EMPTY_LIST;
         }
 
-        //System.out.println("****************   Results for lopare" + loparEventorId + "   *****************");
+        //System.out.println("****************   Results for lopare " + loparEventorId + "   *****************");
         List<Resultat> fetchedResults = new ArrayList<>();
         for (ResultList rl : rll.resultLists) {
-            //System.out.println("Event: " + rl.event.name);
-            if (rl.event.eventForm.equals("RelaySingleDay")) {
-                fetchedResults.add(Mapper.asRelaySingleDayResult(rl.event));
-            }
-
-            else if (rl.event.eventForm.equals("IndMultiDay")) {
-                fetchedResults.addAll(Mapper.asIndMultiDayResult(rl.event, rl.classResult, loparEventorId));
-            }
-
-            else if (rl.event.eventForm.equals("IndSingleDay")) {
+            if (rl.event.eventForm == null) { //Error in Eventor in 2023, event form is null, caclulate as IndSingleDayResult
                 fetchedResults.add(Mapper.asIndSingleDayResult(rl.event, rl.classResult, loparEventorId));
-            }
-            else if (rl.event.eventForm.equals("PatrolSingleDay")) {
+            } else if (rl.event.eventForm.equals("RelaySingleDay")) {
+                fetchedResults.add(Mapper.asRelaySingleDayResult(rl.event));
+            } else if (rl.event.eventForm.equals("IndMultiDay")) {
+                fetchedResults.addAll(Mapper.asIndMultiDayResult(rl.event, rl.classResult, loparEventorId));
+            } else if (rl.event.eventForm.equals("IndSingleDay")) {
+                fetchedResults.add(Mapper.asIndSingleDayResult(rl.event, rl.classResult, loparEventorId));
+            } else if (rl.event.eventForm.equals("PatrolSingleDay")) {
                 fetchedResults.add(Mapper.asPatrolSingleDayResult(rl.event));
-            }
-            else {
+            } else {
                 throw new RuntimeException("Unknown eventForm: " + rl.event.eventForm);
             }
-
         }
-
         return fetchedResults;
     }
 
