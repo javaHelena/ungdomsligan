@@ -20,7 +20,7 @@ public class Mapper {
     private static final List<String> INGNORABLE_EVENT_IDS =
             Arrays.asList("46178", "46178", "38907", "46377", "43305", "46135", "45030", "44344", "44345", "45245",
                     "42704", "42887", "42908", "40037", "46730", "44222", "44506", "44508", "45850", "44379", "43656",
-                    "46607", "42765", "42974", "42975", "42976", "43588", "44123", "44272", "43935", "43946", "44239",
+                    "46607", "42765", "42974", "42975", "42976", "43588", "43589", "44123", "44272", "43935", "43946", "44239",
                     "47743", "43771", "43982","43785" ,"44443","42751" ,"47575", "42681");
 
 
@@ -43,7 +43,7 @@ public class Mapper {
     //46607 Roslagsveteranerna
     //42765 SkidO
     //42974, 42975, 42976 Stockholm City Cup
-    //43588 Stockholm Indoor
+    //43588, 43589 Stockholm Indoor
     //44123 Vintercupen #10 HärlövsIF
     //44272, 43935, 43946, 44239 Vinterserien
     //47743, 43771, 43982, 43785, 44443 VNC Vinternatt Cup 1, 3, 4, 5, 6
@@ -154,9 +154,9 @@ public class Mapper {
                         resultat.poang = 10;
                     }
                 }
-            } else {
-                //System.out.println("MAPPER.populate: Maxpoäng för tävling : " + resultat.tavling.namn + " är " + resultat.maxpoang);
             }
+        } else if (resultat.status.equals("MisPunch")) {
+            resultat.poang = 1;
         }
     }
 
@@ -240,7 +240,7 @@ public class Mapper {
     public static BaseClass asBasklass(int baseClassId, ClassResult classResult, Event event) {
 
         if (INGNORABLE_EVENT_IDS.contains(event.eventId)) {
-            System.out.println("Ignorerar tävling " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "( "+ classResult.eventClass.classTypeId + ")");
+            //System.out.println("Ignorerar tävling " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "( "+ classResult.eventClass.classTypeId + ")");
             return BaseClass.MAX_0;
         }
 

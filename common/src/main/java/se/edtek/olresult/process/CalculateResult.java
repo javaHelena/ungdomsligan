@@ -24,7 +24,6 @@ public class CalculateResult extends AbstractProcess {
 
         jokare.stream().forEach(j -> {
             calculatePoints(resultatDAO, lopareDAO, j);
-           // System.out.println("Calculating points for " + j.fornamn + " " + j.efternamn);
         });
         System.out.println("Done - Running CalculateResultat!");
     }
@@ -78,7 +77,7 @@ public class CalculateResult extends AbstractProcess {
 
 
         if (results == null || results.isEmpty()) {
-            return 0;
+            return -1; //No results at all in Eventor
         }
 
         List<Integer> points = results.stream().map(r -> r.poang).collect(Collectors.toList());
