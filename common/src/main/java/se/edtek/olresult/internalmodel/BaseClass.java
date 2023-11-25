@@ -66,7 +66,7 @@ public enum BaseClass {
     ÖM4(97),
     ÖM5(98),
     ÖM6(99),                //Ny 2023
-    ÖM7(100),
+    ÖM7(100), //ex 2023 Viken indoor cup  svår
     ÖM8(101),
     ÖM9(102),
     ÖM103(103),              //Ny 2023
