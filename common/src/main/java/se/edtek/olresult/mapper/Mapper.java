@@ -239,14 +239,17 @@ public class Mapper {
 
     public static BaseClass asBasklass(int baseClassId, ClassResult classResult, Event event) {
 
-
         if (INGNORABLE_EVENT_IDS.contains(event.eventId)) {
-            System.out.println("MAPPER.asBasKlass: Ignorerar tävling " + event.eventId + " - " + event.name);
+            System.out.println("Ignorerar tävling " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "( "+ classResult.eventClass.classTypeId + ")");
             return BaseClass.MAX_0;
         }
 
         if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {   // Ska inte vara Base Class NOLL_50, därav specialkoll
 
+            if (classResult.eventClass.name.contains("Kort")){
+                //System.out.println("Kortklasser ska vara MAX_80 - EventorId: " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "("+ classResult.eventClass.classTypeId + ")");
+                return BaseClass.MAX_80;  // Kortklasser ska vara MAX_80
+            }
             //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället. - EventorId: " + eventId);
             //System.out.println("0 & 17;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_100.name() + ";" + BaseClass.MAX_100.getMaxpoang());
 
