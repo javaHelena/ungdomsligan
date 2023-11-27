@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.edtek</groupId>
   <artifactId>ungdomsligan</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>olresult</name>
-  
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -14,13 +14,12 @@
         <artifactId>common</artifactId>
         <version>${project.version}</version>
       </dependency>
-      </dependencies>
-   </dependencyManagement>
-  
-	
-	<modules>
-		<module>common</module>
-  	</modules>
+    </dependencies>
+  </dependencyManagement>
+
+  <modules>
+    <module>common</module>
+  </modules>
 
   <build>
     <plugins>
@@ -34,4 +33,4 @@
       </plugin>
     </plugins>
   </build>
-  </project>
+</project>

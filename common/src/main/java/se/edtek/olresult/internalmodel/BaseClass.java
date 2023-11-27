@@ -1,5 +1,8 @@
 package se.edtek.olresult.internalmodel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum BaseClass {
     MAX_0(-6, 0),
     MAX_10(-5,10),
@@ -90,6 +93,18 @@ public enum BaseClass {
 
     private int k;
     private int maxpoang;
+
+    private static final Map<Integer, BaseClass> BY_BASECLASS_ID_MAP = new HashMap<>();
+
+    static {
+        for (BaseClass baseClass : values()) {
+            BY_BASECLASS_ID_MAP.put(baseClass.k, baseClass);
+        }
+    }
+
+    public static BaseClass fromBaseClassId(int k) {
+        return BY_BASECLASS_ID_MAP.get(k);
+    }
 
     BaseClass(int k, int maxpoang) {
         this.maxpoang = maxpoang;

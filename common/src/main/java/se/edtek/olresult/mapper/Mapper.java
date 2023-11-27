@@ -23,7 +23,6 @@ public class Mapper {
                     "44123", "44272", "43935", "43946", "44239", "47743",
                     "43771", "43982","43785" ,"44443");
 
-
     //2023 - Tävlingar som ska ignoreras
     //38907 Daladubbeln patrull
     //43305 Gävle Indoor
@@ -63,6 +62,8 @@ public class Mapper {
         resultat.klass = classResult.eventClass.name;
         resultat.classTypeId = classResult.eventClass.classTypeId;
         resultat.baseClassId = classResult.eventClass.baseClassId;
+        resultat.baseClass = asBasklass(resultat.baseClassId, classResult, event);
+        resultat.maxpoang = resultat.baseClass.getMaxpoang();
 
 //        System.out.println(resultat.tavling.eventorId + ";"
 //                + resultat.tavling.namn +  "; "
@@ -74,17 +75,7 @@ public class Mapper {
 //                + resultat.baseClass.getKlass()
 //                + classResult.eventClass.eventClassStatus );
 
-        if (classResult.eventClass.baseClassId == 0) {
-//            System.out.println("EventId, event.name; eventClass.name; baseClass.id; classType.id; eventClassStatus" );
-//            System.out.println(event.eventId + ";" + event.name + "; " + classResult.eventClass.name + "; " + classResult.eventClass.baseClassId + "; " + classResult.eventClass.classTypeId + "; " + classResult.eventClass.eventClassStatus);
-//            System.out.println("Tavling: " + event.name +  " - EventClass: " + classResult.eventClass.name + " - BaseClassId: " + classResult.eventClass.baseClassId +  " och ClassType id: " + classResult.eventClass.classTypeId + " - EventClassStatus: " + classResult.eventClass.eventClassStatus );
-        }
-
-        resultat.baseClass = asBasklass(resultat.baseClassId, classResult, event);
-        resultat.maxpoang = resultat.baseClass.getMaxpoang();
-
         // ************************ for Helena ***************** //
-
 
         String id = resultat.lopare.eventorId;
         String p = resultat.lopare.fornamn + "  " + resultat.lopare.fornamn;
@@ -241,8 +232,7 @@ public class Mapper {
             return BaseClass.MAX_0;
         }
 
-        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {   // Ska inte vara Base Class NOLL_50, därav specialkoll
-
+        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {   // Ska inte alltid vara Base Class NOLL_50, därav specialkoll
 
             if (classResult.eventClass.name.contains("Kort")){
                 //System.out.println("Kortklasser ska vara MAX_80 - EventorId: " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "("+ classResult.eventClass.classTypeId + ")");
@@ -250,7 +240,7 @@ public class Mapper {
             }
 
             if (classResult.eventClass.name.contains("Jaktstart")){
-                System.out.println("Jaktklasser ska vara MAX_0 - EventorId: " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "("+ classResult.eventClass.classTypeId + ")");
+                //System.out.println("Jaktklasser ska vara MAX_0 - EventorId: " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "("+ classResult.eventClass.classTypeId + ")");
                 return BaseClass.MAX_0;  // Jaktklasser ska inte vara med.
             }
             //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället. - EventorId: " + eventId);
@@ -274,21 +264,15 @@ public class Mapper {
             return BaseClass.NOLL_50;
         }
 
-
-
-
-
-        for (BaseClass baseClass : BaseClass.values()) {
-            if (baseClass.getKlass() == baseClassId) {
-                //System.out.println( "MAPPER.asBasKlass: I for loopen - baseklass.getKlass (== baseClassId) : " + baseClass.getKlass() + "  - baseclass: " + baseClass);
-                //System.out.println("FOR LOOP;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + baseClass.name() + ";" + baseClass.getMaxpoang());
-                return baseClass;
-            }
-            //System.out.println( "NO MATCHING???? *****  MAPPER.asBasKlass: I for loopen - baseklass.getKlass: " + baseClass.getKlass() + "  - baseclass: " + baseClass);
+        BaseClass currentBaseClass = BaseClass.fromBaseClassId(baseClassId);
+        if(currentBaseClass != null) {
+            //System.out.println("currentBaseClass != null;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + currentBaseClass.name() + ";" + currentBaseClass.getMaxpoang());
+            return currentBaseClass;
         }
 
-        //System.out.println("Ogiltig tävling:  " + eventId);
-        //return BaseClass.OGILTIG;
+        //INGEN MATCHNING
+        System.out.println("Ogiltig tävling:  " + event.eventId);
+//        return BaseClass.OGILTIG;
 //        System.out.println("MAPPER.asBasKlass:  Classresult:  baseClassid: " + classResult.eventClass.baseClassId +
 //                " - classTypeId: " + classResult.eventClass.classTypeId +
 //                " - name: " + classResult.eventClass.name);
