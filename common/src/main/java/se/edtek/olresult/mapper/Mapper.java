@@ -240,6 +240,10 @@ public class Mapper {
                 return BaseClass.MAX_10;  // Alla Mareld ska ge 10 poöng. Ej HD-klasser
             }
 
+            if( event.eventId.equals("42751") && classResult.eventClass.name.equals("Motion") ) {
+                return BaseClass.MAX_10; //Höstlunken motion
+            }
+
             return BaseClass.MAX_100;
         }
 
