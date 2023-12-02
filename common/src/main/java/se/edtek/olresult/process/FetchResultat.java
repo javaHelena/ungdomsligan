@@ -45,8 +45,9 @@ public class FetchResultat extends AbstractProcess {
 
         for (Lopare jokLopare : jokare) {
             if (jokLopare.fodelseDatum.isAfter(oldestRunnerNotIncluded)) {
-                System.out.println("*******************************************************");
-                System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn + " id: " + jokLopare.eventorId);
+                //System.out.println("*******************************************************");
+                //System.out.println(jokLopare.fornamn + " " + jokLopare.efternamn);
+                //System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn + " id: " + jokLopare.eventorId);
                 List<Resultat> resultat = client.getResultat(jokLopare.eventorId, from, to);
                 resultat.stream().forEach(r -> persistResultat(dbi, r, jokLopare));
             }
@@ -55,7 +56,7 @@ public class FetchResultat extends AbstractProcess {
     }
 
     private void persistResultat(DBI dbi, Resultat resultat, Lopare lopare) {
-        //System.out.println("Persisting result for Jokare: " + jokLopare.fornamn + " " + jokLopare.efternamn + " id: " + jokLopare.eventorId);
+        //System.out.println("Persisting result for Jokare: " + lopare.fornamn + " " + lopare.efternamn + " id: " + lopare.eventorId);
 
         resultat.tavling.id = persistTavling(dbi, resultat.tavling);
 
@@ -75,6 +76,7 @@ public class FetchResultat extends AbstractProcess {
         if( loparLista.contains(lopare.eventorId)) {  // Printing known runners to check for reasonable results
         //System.out.println("Persisting result for Jokare: " + lopare.fornamn + " " + lopare.efternamn + " id: " + lopare.eventorId + ": Placering " + resultat.placering + " - " +  resultat.tavling.eventorId + " - " + resultat.tavling.namn);
         }
+        //System.out.println("Persisting result for Jokare: " + lopare.fornamn + " " + lopare.efternamn + " id: " + lopare.eventorId + ": Placering " + resultat.placering + " - Poäng: " + resultat.poang + " - Time diff: " + resultat.timeDiff + " - " +  resultat.tavling.eventorId + " - " + resultat.tavling.namn);
 
         dao.create(
                 UUID.randomUUID().toString(),

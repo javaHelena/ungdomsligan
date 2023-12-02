@@ -18,31 +18,29 @@ import java.util.List;
 public class Mapper {
 
     private static final List<String> INGNORABLE_EVENT_IDS =
-            Arrays.asList("38907", "43305", "47575", "42704", "42887", "42908", "46730","44222", "44506", "44508",
-                    "45850", "44379", "43656", "46607", "42765", "42766", "42681", "43588", "43589", "46951","46918",
-                    "44123", "44272", "43935", "43946", "44239", "47743",
-                    "43771", "43982","43785" ,"44443");
-
-    //2023 - Tävlingar som ska ignoreras
-    //38907 Daladubbeln patrull
-    //43305 Gävle Indoor
-    //47575, Luffarligan
-    //42704, 42887, 42908 Mareld Stockholm by night
-    //46730 MiniKM
-    //44222, 44506, 44508 - Motionsorientering Ursvik
-    //45850 Motionsorientering nationaldagen
-    //44379 MTBO Uppsala
-    //43656 Oringen träningsbanor
-    //46607 Roslagsveteranerna
-    //42765 42766 SkidO
-    //42681, Stockholm by night
-    //43588, 43589 Stockholm Indoor
-    //46951 USM öppna klasser
-    //46918 Viken indoor
-    //44123 Vintercupen #10 HärlövsIF
-    //44272, 43935, 43946, 44239 Vinterserien
-    //47743, 43771, 43982, 43785, 44443 VNC Vinternatt Cup 1, 3, 4, 5, 6
-
+            Arrays.asList(
+                    "38907",                                            //Daladubbeln patrull
+                    "47362",                                            //Falu Indoor etapp 1
+                    "43305",                                            //Gävle Indoor
+                    //"46135",                                          //Höglands-OL Anneberg
+                    // "47575",                                         //Luffarligan
+                    // "42704", "42887", "42908",                       //Mareld Stockholm by night
+                    "46730",                                            //MiniKM
+                    // "44506",                                         //Motionsorientering Ursvik
+                    // "45850",                                         //Motionsorientering nationaldagen
+                    "44379",                                            //MTBO Uppsala
+                    "43656",                                            //Oringen träningsbanor
+                    // "46607",                                         //Roslagsveteranerna
+                    // "42801",                                         //Skärgårdssprinten
+                    "42765", "42766",                                   //SkidO
+                    // "42681",                                         //Stockholm by night
+                    "43588", "43589",                                   //Stockholm Indoor
+                    //  "46951",                                        //USM öppna klasser
+                    "46918"                                             //Viken indoor
+                    // "44123",                                         //Vintercupen #10 HärlövsIF
+                    // "47743", "43771", "43785", "43982", "44443"      //VNC Vinternatt Cup 1, 3, 4, 5, 6
+                    // "44272", "43935", "43946", "44239"               //Vinterserien
+            );
 
     public static Lopare asLopare(Person person) {
         Lopare lopare = new Lopare();
@@ -232,19 +230,15 @@ public class Mapper {
             return BaseClass.MAX_0;
         }
 
-        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {   // Ska inte alltid vara Base Class NOLL_50, därav specialkoll
+        if (baseClassId == 0 && classResult.eventClass.classTypeId == 17) {   // Ska inte alltid vara Base Class MAX_100, därav specialkoll
 
             if (classResult.eventClass.name.contains("Kort")){
-                //System.out.println("Kortklasser ska vara MAX_80 - EventorId: " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "("+ classResult.eventClass.classTypeId + ")");
                 return BaseClass.MAX_80;  // Kortklasser ska vara MAX_80
             }
 
-            if (classResult.eventClass.name.contains("Jaktstart")){
-                //System.out.println("Jaktklasser ska vara MAX_0 - EventorId: " + event.eventId + " - " + event.name + " - " + classResult.eventClass.name + " - " + baseClassId + "("+ classResult.eventClass.classTypeId + ")");
-                return BaseClass.MAX_0;  // Jaktklasser ska inte vara med.
+            if (event.eventId.equals("42887")){ //Mareld Stockholm by night
+                return BaseClass.MAX_10;  // Alla Mareld ska ge 10 poöng. Ej HD-klasser
             }
-            //System.out.println("MAPPER.asBasKlass: BaseclassId = 0  type id 17 - använder " + BaseClass.MAX_100.name() + " istället. - EventorId: " + eventId);
-            //System.out.println("0 & 17;" + eventId + ";" + classResult.eventClass.name + ";" + baseClassId + ";" + classResult.eventClass.classTypeId + ";" + BaseClass.MAX_100.name() + ";" + BaseClass.MAX_100.getMaxpoang());
 
             return BaseClass.MAX_100;
         }
@@ -257,11 +251,15 @@ public class Mapper {
 
         if (baseClassId == 0 && classResult.eventClass.classTypeId == 19) {
 
-            if (event.eventId.equals("40052") && classResult.eventClass.name.contains("Medelsvår")) {
-                return BaseClass.MAX_10;
+            if (Arrays.asList("U1", "U2", "U3", "U4").contains(classResult.eventClass.name)) {
+                return BaseClass.NOLL_50; //Vanligtvis U-klasser
             }
-            //Vanligtvis U-klasser
-            return BaseClass.NOLL_50;
+
+            return BaseClass.MAX_10;  //Resten Öppna klasser
+        }
+
+        if (Arrays.asList("U1", "U2", "U3", "U4").contains(classResult.eventClass.name) && event.eventId.equals("47833")) {
+            return BaseClass.NOLL_50; //Nordcupen #4 U2, U3
         }
 
         BaseClass currentBaseClass = BaseClass.fromBaseClassId(baseClassId);
